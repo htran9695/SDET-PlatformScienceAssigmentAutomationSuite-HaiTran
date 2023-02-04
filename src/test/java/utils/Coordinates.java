@@ -21,8 +21,6 @@ public class Coordinates {
 
     public Coordinates(String coordinateText) {
         List<String> coorList = new ArrayList<String>(Arrays.asList(coordinateText.split(",")));
-        System.out.println( Integer.parseInt(coorList.get(0).toString()));
-        System.out.println( Integer.parseInt(coorList.get(1).toString()));
         this.x = Integer.parseInt(coorList.get(0).toString());
         this.y = Integer.parseInt(coorList.get(1).toString());
         this.array.put(x);

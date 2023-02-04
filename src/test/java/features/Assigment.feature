@@ -10,5 +10,8 @@ Feature: Testing a REST API
       | 1,0         |
       | 2,2         |
       | 2,3         |
-    And User defined 3 Dirt Patches are randomly created for the application
-
+    And User defined the direction for the hover bot
+      |direction  |
+      |NNESEESWNWW|
+    And User upload data for the hoover service
+    Then User gets the default output
