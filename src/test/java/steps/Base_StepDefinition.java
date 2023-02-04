@@ -4,7 +4,6 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -12,28 +11,26 @@ import utils.Coordinates;
 import utils.HttpBuilder;
 import utils.RoomBuilder;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-public class Assignment_StepDefinition {
+import static java.util.Objects.isNull;
+
+public class Base_StepDefinition {
     HttpBuilder builder;
     JSONObject output;
     JSONObject responseBody;
     Coordinates roomDimension = new Coordinates(5,5);
     Coordinates startingCoord = new Coordinates(0,0);
     JSONArray dirtPatches = new JSONArray();
-    String instruction = "";
+    String instruction;
     int numberOfRandomDirtPatches = 0;
     RoomBuilder room;
 
 
 
-    public Assignment_StepDefinition() throws IOException {
+    public Base_StepDefinition() throws IOException {
         this.builder = new HttpBuilder("localhost:8080/v1/cleaning-sessions", "http");
     }
 
@@ -62,24 +59,47 @@ public class Assignment_StepDefinition {
     @And("User defined the direction for the hover bot")
     public void userDefinedTheDirectionForTheHoverBot(DataTable direction){
         List<Map<String, String>> data = direction.asMaps(String.class, String.class);
-        this.instruction = data.get(0).get("direction");
+        if(data.get(0).get("direction").equals("None")) {
+            this.instruction = "";
+        } else{
+            this.instruction = data.get(0).get("direction");
+        }
     }
 
     @And("User upload data for the hoover service")
     public void userUploadDefaultDataForTheHooverService () throws IOException {
-        if (this.numberOfRandomDirtPatches != 0) {
-            this.room = new RoomBuilder(roomDimension, startingCoord, numberOfRandomDirtPatches, instruction);
-        } else {
-            this.room = new RoomBuilder(roomDimension, startingCoord, dirtPatches, instruction);
+        if(isNull(instruction)){
+            if (this.numberOfRandomDirtPatches != 0) {
+                this.room = new RoomBuilder(roomDimension, startingCoord, numberOfRandomDirtPatches);
+            } else {
+                this.room = new RoomBuilder(roomDimension, startingCoord, dirtPatches);
+            }
+        } else{
+            if (this.numberOfRandomDirtPatches != 0) {
+                this.room = new RoomBuilder(roomDimension, startingCoord, numberOfRandomDirtPatches, instruction);
+            } else {
+                this.room = new RoomBuilder(roomDimension, startingCoord, dirtPatches, instruction);
+            }
         }
+
         String projectString = room.build();
         output = builder.sendRequest("post", "", projectString);
-        this.responseBody = new JSONObject(output.getString("response body"));
+        try {
+            this.responseBody = new JSONObject(output.getString("response body"));
+        } catch (Exception e){
+        }
     }
 
-    @Then("User gets the default output")
-    public void userGetsTheDefaultOutput(){
-        Assert.assertTrue(this.responseBody.getJSONArray("coords").toString().equals("[1,3]"));
-        Assert.assertTrue(this.responseBody.getInt("patches") == 1);
+    @Then("User gets the expected output")
+    public void userGetsTheDefaultOutput(DataTable result){
+        List<Map<String,String>> data =result.asMaps(String.class,String.class);
+        Assert.assertTrue(this.responseBody.getJSONArray("coords").toString().equals(data.get(0).get("coords")));
+        Assert.assertTrue(this.responseBody.getInt("patches") == Integer.parseInt(data.get(0).get("patches")));
     }
+
+    @Then("User receives error code")
+    public void userReceivesErrorCode(){
+        Assert.assertTrue(this.output.getInt("response code") == 400);
+    }
+
 }
