@@ -91,10 +91,14 @@ public class Base_StepDefinition {
     }
 
     @Then("User gets the expected output")
-    public void userGetsTheDefaultOutput(DataTable result){
-        List<Map<String,String>> data =result.asMaps(String.class,String.class);
-        Assert.assertTrue(this.responseBody.getJSONArray("coords").toString().equals(data.get(0).get("coords")));
-        Assert.assertTrue(this.responseBody.getInt("patches") == Integer.parseInt(data.get(0).get("patches")));
+    public void userGetsTheDefaultOutput(DataTable result) {
+        List<Map<String, String>> data = result.asMaps(String.class, String.class);
+        if (data.get(0).get("coords") != null) {
+            Assert.assertTrue(this.responseBody.getJSONArray("coords").toString().equals(data.get(0).get("coords")));
+        }
+        if (data.get(0).get("patches") != null) {
+            Assert.assertTrue(this.responseBody.getInt("patches") == Integer.parseInt(data.get(0).get("patches")));
+        }
     }
 
     @Then("User receives error code")

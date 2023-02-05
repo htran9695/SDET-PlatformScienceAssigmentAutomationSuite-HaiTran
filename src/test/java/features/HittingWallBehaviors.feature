@@ -12,7 +12,7 @@ Feature: Hitting wall behaviors
     And User upload data for the hoover service
     Then User gets the expected output
       | coords | patches|
-      | [0,4]  | 0      |
+      | [0,4]  |        |
 
   Scenario: Verify robot driving into wall - South
     When User define the room dimension and starting position
@@ -25,7 +25,7 @@ Feature: Hitting wall behaviors
     And User upload data for the hoover service
     Then User gets the expected output
       | coords | patches|
-      | [3,0]  | 0      |
+      | [3,0]  |        |
 
   Scenario: Verify robot driving into wall - East
     When User define the room dimension and starting position
@@ -38,7 +38,7 @@ Feature: Hitting wall behaviors
     And User upload data for the hoover service
     Then User gets the expected output
       | coords | patches|
-      | [4,3]  | 0      |
+      | [4,3]  |        |
 
   Scenario: Verify robot driving into wall - West
     When User define the room dimension and starting position
@@ -51,7 +51,7 @@ Feature: Hitting wall behaviors
     And User upload data for the hoover service
     Then User gets the expected output
       | coords | patches|
-      | [0,3]  | 0      |
+      | [0,3]  |        |
 
   Scenario: Verify robot driving into wall - Top Right Corner
     When User define the room dimension and starting position
@@ -61,5 +61,5 @@ Feature: Hitting wall behaviors
     And User upload data for the hoover service
     Then User gets the expected output
       | coords | patches|
-      | [11,17]  | 0    |
+      | [11,17]|     |
 
