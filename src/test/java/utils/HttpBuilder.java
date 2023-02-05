@@ -8,44 +8,41 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.util.*;
 
 
 /**
- * Main class to handle all http transactions and test suite logic
+ * Main class to handle all http transactions
  */
 public class HttpBuilder {
-    private CloseableHttpClient httpclient = HttpClients.createDefault();
+    private final CloseableHttpClient httpclient = HttpClients.createDefault();
     HttpResponse httpresponse;
     HttpUriRequest httpmethod;
     private JSONObject output;
 
-    private String uri;
-    private String protocol;
+    private final String uri;
+    private final String protocol;
 
 
     /**
      * Builder that take in user infos to populate token, list of team Ids and user Id
      *
-     * @param uri
-     * @param protocol
-     * @throws IOException
+     * @param uri String of URI defined by the user
+     * @param protocol String of protocol used defined by the user
      */
-    public HttpBuilder(String uri, String protocol) throws IOException {
+    public HttpBuilder(String uri, String protocol){
         this.uri = uri;
         this.protocol = protocol;
     }
 
      /**
-     * Method that take in users input to form a request Ex: builder.sendRequest(GET,"/sample/","{"id":"sample_id"}")
+     * Method that take in users input to form a request e.g: builder.sendRequest(GET,"/sample/","{"id":"sample_id"}")
      *
-     * @param method
-     * @param path
-     * @param payLoad
+     * @param method string define the http/https method
+     * @param path path to the endpoint
+     * @param payLoad body of the request
      * @return
      * @throws IOException
      */
@@ -93,7 +90,7 @@ public class HttpBuilder {
     /**
      * This is a private method that is used to build the URL String
      *
-     * @param path
+     * @param path combine the protocal and uri with the string path defined by the user
      * @return
      */
     private String buildUrl(String path){

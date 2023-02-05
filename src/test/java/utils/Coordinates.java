@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This is the custome coordinates class used to support the generation of the
+ * This is the custom coordinates class used to support the generation of the
  * RoomBuilder class
  */
 public class Coordinates {
@@ -19,8 +19,8 @@ public class Coordinates {
     /**
      * Constructor method for custom class coordinates, take in x and y int
      * and populate the JSONArray coordination used for the RoomBuilder class
-     * @param x
-     * @param y
+     * @param x integer define the value of the coordinate on the x-axis
+     * @param y integer define the value of the coordinate on the y-axis
      */
     public Coordinates(int x, int y) {
         this.x = x;
@@ -32,12 +32,12 @@ public class Coordinates {
     /**
      * Constructor method for custom class coordinates, take in a
      * String of coordination e.g 1,2 to populate the coordinates array
-     * @param coordinateText
+     * @param coordinateText text contains coordinate e.g 1,2
      */
     public Coordinates(String coordinateText) {
-        List<String> coorList = new ArrayList<String>(Arrays.asList(coordinateText.split(",")));
-        this.x = Integer.parseInt(coorList.get(0).toString());
-        this.y = Integer.parseInt(coorList.get(1).toString());
+        List<String> coorList = new ArrayList<>(Arrays.asList(coordinateText.split(",")));
+        this.x = Integer.parseInt(coorList.get(0));
+        this.y = Integer.parseInt(coorList.get(1));
         this.array.put(x);
         this.array.put(y);
     }
@@ -47,7 +47,7 @@ public class Coordinates {
      * size limit and generate a random combination of coordinate between 0 and size
      * NOTE: This method works best when size is at least 10, anything bellow 10 has
      * a very high chance of duplication for the coordinates being generated
-     * @param size
+     * @param size integer defining the max value for x and y
      */
     public Coordinates(int size){
         Random rand = new Random();
@@ -59,7 +59,7 @@ public class Coordinates {
 
     /**
      * Get method return the coordinate array
-     * @return array
+     * @return array the coordinate returned as a JSONArray e.g [1,2]
      */
     public JSONArray get(){
         return this.array;
